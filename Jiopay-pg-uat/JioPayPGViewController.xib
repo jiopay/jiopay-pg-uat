@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="JioPayPGViewController" customModule="Jiopay_pg_uat" customModuleProvider="target">
+            <connections>
+                <outlet property="ChildPopupContainer" destination="tef-EG-L5D" id="mqY-k8-Ngf"/>
+                <outlet property="popupWebViewContainer" destination="1uq-Im-A4b" id="Eji-fT-QKR"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1uq-Im-A4b">
+                    <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tef-EG-L5D">
+                    <rect key="frame" x="0.0" y="44" width="414" height="818"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                </view>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="tef-EG-L5D" firstAttribute="bottom" secondItem="fnl-2z-Ty3" secondAttribute="bottom" id="10g-5e-cGB"/>
+                <constraint firstItem="1uq-Im-A4b" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="Bua-Eb-3xC"/>
+                <constraint firstItem="tef-EG-L5D" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="N5z-vz-4Ys"/>
+                <constraint firstItem="tef-EG-L5D" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="ZsC-t6-mco"/>
+                <constraint firstItem="1uq-Im-A4b" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="ejm-ZJ-rak"/>
+                <constraint firstItem="1uq-Im-A4b" firstAttribute="bottom" secondItem="fnl-2z-Ty3" secondAttribute="bottom" id="pxq-n0-8Qt"/>
+                <constraint firstItem="1uq-Im-A4b" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="qpx-C4-myd"/>
+                <constraint firstItem="tef-EG-L5D" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="yDX-7v-H9C"/>
+            </constraints>
+            <point key="canvasLocation" x="2.8985507246376816" y="118.52678571428571"/>
+        </view>
+    </objects>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
