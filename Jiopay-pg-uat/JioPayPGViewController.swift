@@ -9,6 +9,11 @@ import Foundation
 import WebKit
 import UIKit
 
+enum env {
+    static let PP = "https://pp-checkout.jiopay.com:8443/"
+    static let SIT = "http://psp-mandate-merchant-sit.jiomoney.com:3003/pg"
+}
+
 enum jsEvents {
     static let initReturnUrl = "INIT_RET_URL"
     static let closeChildWindow = "CLOSE_CHILD_WINDOW"
@@ -76,7 +81,7 @@ extension JioPayPGViewController: WKScriptMessageHandler, WKUIDelegate {
     
     public func loadWebView() {
         
-        let url = URL (string: "http://psp-mandate-merchant-sit.jiomoney.com:3003/pg")
+        let url = URL (string: env.SIT)
         let request = NSMutableURLRequest(url: url!)
         request.httpMethod = "POST"
         request.addValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
