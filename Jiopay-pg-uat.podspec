@@ -8,7 +8,7 @@ Pod::Spec.new do |spec|
     This Library implements the pod for Jiopay payment checkout.
                    DESC
 
-  spec.homepage     = "https://github.com/jiopay/jiopay-pg-uat"
+  spec.homepage     = "https://cocoapods.org/pods/Jiopay-pg-uat"
   # spec.screenshots  = "www.example.com/screenshots_1.gif", "www.example.com/screenshots_2.gif"
 
   spec.license      = { :type => "MIT", :file => "LICENSE" }

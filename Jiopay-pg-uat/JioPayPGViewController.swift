@@ -175,7 +175,6 @@ extension JioPayPGViewController: WKScriptMessageHandler, WKUIDelegate {
         }
         let credential = URLCredential(trust: serverTrust)
         completionHandler(.useCredential, credential)
-        
     }
     
     public func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: ((WKNavigationActionPolicy) -> Void)) {
