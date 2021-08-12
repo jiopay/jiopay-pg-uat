@@ -28,7 +28,6 @@ public protocol PGSDKDelegate {
 
 public class JioPayPGViewController: UIViewController {
     
-    
     var webView: WKWebView!
     var popupWebView: WKWebView?
     var childPopupWebView: WKWebView?
@@ -75,19 +74,18 @@ extension JioPayPGViewController: WKScriptMessageHandler, WKUIDelegate {
     webView.uiDelegate = self
     webView.navigationDelegate = self
     view.addSubview(webView)
-    
     self.view.layoutSubviews()
+    
     }
     
     public func loadWebView() {
-        
         let url = URL (string: env.SIT)
         let request = NSMutableURLRequest(url: url!)
         request.httpMethod = "POST"
         request.addValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
         var post: String = "appaccesstoken=\(appAccessToken)&appidtoken=\(appIdToken)&intentid=\(intentId)&brandColor=\(brandColor)&bodyBgColor=\(bodyBgColor)&bodyTextColor=\(bodyTextColor)&headingText=\(headingText)"
         post = post.replacingOccurrences(of: "+", with: "%2b")
-        print("post request ======>", post)
+        
         request.httpBody = post.data(using: .utf8)
         webView.load(request as URLRequest)
     }
@@ -97,7 +95,6 @@ extension JioPayPGViewController: WKScriptMessageHandler, WKUIDelegate {
     }
     
     public func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        print("message Name====>", message.name)
         if message.name == jsEvents.billPayInterface {
             do {
                 let messageBody = message.body as! String
@@ -134,19 +131,17 @@ extension JioPayPGViewController: WKScriptMessageHandler, WKUIDelegate {
     }
     
     func handleSendErrorEvent(data: [String: Any]) {
-        print("handleSendErrorEvent data  ====>", data)
         let errorType = data["status_code"] as! String
         let errorMessgae = data["error_msg"] as! String
         self.webViewDidClose(webView)
         self.delegate?.paymentErrorWith(errorType: errorType, errorMessage: errorMessgae)
-        
     }
     
     func handleReturnUrlEvent(data: [String: Any]) {
         let urlString = (data["ret_url"] as? String)!
         var urlComponents = (URLComponents(string: urlString))
         urlComponents?.query = nil
-        
+    
         if popupWebView == nil {
             self.parentReturnURL = (urlComponents?.url!.absoluteString)!
         }else {
@@ -184,12 +179,10 @@ extension JioPayPGViewController: WKScriptMessageHandler, WKUIDelegate {
     }
     
     public func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: ((WKNavigationActionPolicy) -> Void)) {
-        
         let redirectUrlStr = navigationAction.request.url?.absoluteString
         print("redirectUrlStr ====>", redirectUrlStr as Any)
         if self.webView != nil {
             if !self.parentReturnURL.isEmpty && redirectUrlStr!.hasPrefix(self.parentReturnURL) {
-            print("Inside parent return URL ")
             let txnId = navigationAction.request.url?.queryParameters?["tid"]
             webView.stopLoading()
             decisionHandler(.cancel)
@@ -206,14 +199,9 @@ extension JioPayPGViewController: WKScriptMessageHandler, WKUIDelegate {
     }
     
     public func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
-        print("PopWebView =====>", popupWebView as Any)
-        print("ChildPopWebView =====>", childPopupWebView as Any)
-        
         if popupWebView != nil {
             childPopupWebView = WKWebView(frame: ChildPopupContainer.bounds, configuration: configuration)
-
             ChildPopupContainer.isHidden = false
-
             childPopupWebView!.autoresizingMask = [.flexibleWidth, .flexibleHeight]
             childPopupWebView!.navigationDelegate = self
             childPopupWebView!.uiDelegate = self
