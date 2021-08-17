@@ -11,6 +11,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="JioPayPGViewController" customModule="Jiopay_pg_uat" customModuleProvider="target">
             <connections>
                 <outlet property="ChildPopupContainer" destination="tef-EG-L5D" id="mqY-k8-Ngf"/>
+                <outlet property="activityIndicator" destination="rWW-dA-s2u" id="Iu8-im-Bw4"/>
                 <outlet property="popupWebViewContainer" destination="1uq-Im-A4b" id="Eji-fT-QKR"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -28,17 +29,22 @@
                     <rect key="frame" x="0.0" y="44" width="414" height="818"/>
                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                 </view>
+                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="rWW-dA-s2u">
+                    <rect key="frame" x="197" y="438" width="20" height="20"/>
+                </activityIndicatorView>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
                 <constraint firstItem="tef-EG-L5D" firstAttribute="bottom" secondItem="fnl-2z-Ty3" secondAttribute="bottom" id="10g-5e-cGB"/>
+                <constraint firstItem="rWW-dA-s2u" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="3pL-bE-hX0"/>
                 <constraint firstItem="1uq-Im-A4b" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="Bua-Eb-3xC"/>
                 <constraint firstItem="tef-EG-L5D" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="N5z-vz-4Ys"/>
                 <constraint firstItem="tef-EG-L5D" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="ZsC-t6-mco"/>
                 <constraint firstItem="1uq-Im-A4b" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="ejm-ZJ-rak"/>
                 <constraint firstItem="1uq-Im-A4b" firstAttribute="bottom" secondItem="fnl-2z-Ty3" secondAttribute="bottom" id="pxq-n0-8Qt"/>
                 <constraint firstItem="1uq-Im-A4b" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="qpx-C4-myd"/>
+                <constraint firstItem="rWW-dA-s2u" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="uel-4v-2Q6"/>
                 <constraint firstItem="tef-EG-L5D" firstAttribute="trailing" secondItem="fnl-2z-Ty3" secondAttribute="trailing" id="yDX-7v-H9C"/>
             </constraints>
             <point key="canvasLocation" x="2.8985507246376816" y="118.52678571428571"/>

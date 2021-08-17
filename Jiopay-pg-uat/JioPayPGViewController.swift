@@ -44,8 +44,10 @@ public class JioPayPGViewController: UIViewController {
     
     var parentReturnURL: String = ""
     var childReturnURL: String = ""
+    var errorLabel: UILabel?
     @IBOutlet weak var popupWebViewContainer: UIView!
     @IBOutlet weak var ChildPopupContainer: UIView!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
     public override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,6 +55,15 @@ public class JioPayPGViewController: UIViewController {
         loadWebView()
         popupWebViewContainer.isHidden = true
         ChildPopupContainer.isHidden = true
+    }
+    
+    public override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        activityIndicator.isHidden = false
+        activityIndicator.color = UIColor(brandColor)
+        self.popupWebViewContainer.backgroundColor = UIColor(bodyBgColor)
+        self.ChildPopupContainer.backgroundColor = UIColor(bodyBgColor)
+        self.view.addSubview(activityIndicator)
     }
     
 }
@@ -149,6 +160,14 @@ extension JioPayPGViewController: WKScriptMessageHandler, WKUIDelegate {
         }
     }
     
+    func showActivityIndicator(show: Bool) {
+        if show {
+            activityIndicator.startAnimating()
+        } else {
+            activityIndicator.stopAnimating()
+        }
+    }
+    
     func handleCloseChildWindowEvent() {
         let jsMethod = "jiopayCloseChildWindow();"
         if childPopupWebView != nil {
@@ -235,11 +254,41 @@ extension JioPayPGViewController: WKScriptMessageHandler, WKUIDelegate {
 
 extension JioPayPGViewController: WKNavigationDelegate {
     open func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
+        print("didStartProvisionalNavigation")
+        showActivityIndicator(show: true)
+        activityIndicator.isHidden = false
     }
     
     public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        showActivityIndicator(show: false)
+        activityIndicator.isHidden = true
         print("End loading")
     }
+    
+    public func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
+        print("didFailProvisionalNavigation Error ===>", error)
+        print("didFailProvisionalNavigation Error Code ===>", error._code)
+        if error._code == NSURLErrorNotConnectedToInternet {
+            
+            errorLabel?.text = "No Internet connection"
+            view.addSubview(errorLabel!)
+            print("didFailProvisionalNavigation No Internet Error ===>", error)
+        }
+      showActivityIndicator(show: false)
+        activityIndicator.isHidden = true
+    }
+    
+
+    
+    public func webView(_ webView: WKWebView, didFail navigation:WKNavigation!, withError error: Error) {
+        print("Error ===>", error)
+        print("Error Code ===>", error._code)
+        if error._code == NSURLErrorNotConnectedToInternet {
+            print("No Internet Error ===>", error)
+        }
+      showActivityIndicator(show: false)
+        activityIndicator.isHidden = true
+  }
 }
 
 extension Optional where Wrapped: Collection {
@@ -258,3 +307,26 @@ extension URL {
         }
     }
 }
+
+extension UIColor {
+  convenience init(_ hex: String, alpha: CGFloat = 1.0) {
+    var cString = hex.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
+    
+    if cString.hasPrefix("#") { cString.removeFirst() }
+    
+    if cString.count != 6 {
+      self.init("ff0000") // return red color for wrong hex input
+      return
+    }
+    
+    var rgbValue: UInt64 = 0
+    Scanner(string: cString).scanHexInt64(&rgbValue)
+    
+    self.init(red: CGFloat((rgbValue & 0xFF0000) >> 16) / 255.0,
+              green: CGFloat((rgbValue & 0x00FF00) >> 8) / 255.0,
+              blue: CGFloat(rgbValue & 0x0000FF) / 255.0,
+              alpha: alpha)
+  }
+
+}
+
