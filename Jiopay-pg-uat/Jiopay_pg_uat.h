@@ -7,7 +7,6 @@
 
 #import <Foundation/Foundation.h>
 
-dsgsg
 //! Project version number for Jiopay_pg_uat.
 FOUNDATION_EXPORT double Jiopay_pg_uatVersionNumber;
 
