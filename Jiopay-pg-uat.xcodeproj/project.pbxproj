@@ -7,9 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7CF34F30276A0BE800ADDACF /* Sample.h in Headers */ = {isa = PBXBuildFile; fileRef = 7CF34F2E276A0BE800ADDACF /* Sample.h */; };
+		7CF34F31276A0BE800ADDACF /* Sample.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CF34F2F276A0BE800ADDACF /* Sample.m */; };
 		A09207B326C3D7ED00CE0393 /* Jiopay_pg_uat.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A09207A926C3D7EC00CE0393 /* Jiopay_pg_uat.framework */; };
 		A09207B826C3D7ED00CE0393 /* Jiopay_pg_uatTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A09207B726C3D7ED00CE0393 /* Jiopay_pg_uatTests.swift */; };
-		A09207BA26C3D7ED00CE0393 /* Jiopay_pg_uat.h in Headers */ = {isa = PBXBuildFile; fileRef = A09207AC26C3D7EC00CE0393 /* Jiopay_pg_uat.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A09207BA26C3D7ED00CE0393 /* Jiopay-pg-uat.h in Headers */ = {isa = PBXBuildFile; fileRef = A09207AC26C3D7EC00CE0393 /* Jiopay-pg-uat.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A09207C926C3DDFC00CE0393 /* JioPayPGViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A09207C726C3DDFC00CE0393 /* JioPayPGViewController.swift */; };
 		A09207CA26C3DDFC00CE0393 /* JioPayPGViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A09207C826C3DDFC00CE0393 /* JioPayPGViewController.xib */; };
 /* End PBXBuildFile section */
@@ -25,8 +27,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		7CF34F2E276A0BE800ADDACF /* Sample.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Sample.h; sourceTree = "<group>"; };
+		7CF34F2F276A0BE800ADDACF /* Sample.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Sample.m; sourceTree = "<group>"; };
 		A09207A926C3D7EC00CE0393 /* Jiopay_pg_uat.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Jiopay_pg_uat.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		A09207AC26C3D7EC00CE0393 /* Jiopay_pg_uat.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Jiopay_pg_uat.h; sourceTree = "<group>"; };
+		A09207AC26C3D7EC00CE0393 /* Jiopay-pg-uat.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Jiopay-pg-uat.h"; sourceTree = "<group>"; };
 		A09207AD26C3D7EC00CE0393 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A09207B226C3D7ED00CE0393 /* Jiopay-pg-uatTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Jiopay-pg-uatTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A09207B726C3D7ED00CE0393 /* Jiopay_pg_uatTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Jiopay_pg_uatTests.swift; sourceTree = "<group>"; };
@@ -75,10 +79,12 @@
 		A09207AB26C3D7EC00CE0393 /* Jiopay-pg-uat */ = {
 			isa = PBXGroup;
 			children = (
-				A09207AC26C3D7EC00CE0393 /* Jiopay_pg_uat.h */,
+				A09207AC26C3D7EC00CE0393 /* Jiopay-pg-uat.h */,
 				A09207AD26C3D7EC00CE0393 /* Info.plist */,
 				A09207C726C3DDFC00CE0393 /* JioPayPGViewController.swift */,
 				A09207C826C3DDFC00CE0393 /* JioPayPGViewController.xib */,
+				7CF34F2E276A0BE800ADDACF /* Sample.h */,
+				7CF34F2F276A0BE800ADDACF /* Sample.m */,
 			);
 			path = "Jiopay-pg-uat";
 			sourceTree = "<group>";
@@ -99,7 +105,8 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A09207BA26C3D7ED00CE0393 /* Jiopay_pg_uat.h in Headers */,
+				7CF34F30276A0BE800ADDACF /* Sample.h in Headers */,
+				A09207BA26C3D7ED00CE0393 /* Jiopay-pg-uat.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -153,7 +160,7 @@
 				TargetAttributes = {
 					A09207A826C3D7EC00CE0393 = {
 						CreatedOnToolsVersion = 12.3;
-						LastSwiftMigration = 1230;
+						LastSwiftMigration = 1310;
 					};
 					A09207B126C3D7ED00CE0393 = {
 						CreatedOnToolsVersion = 12.3;
@@ -203,6 +210,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A09207C926C3DDFC00CE0393 /* JioPayPGViewController.swift in Sources */,
+				7CF34F31276A0BE800ADDACF /* Sample.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -261,6 +269,7 @@
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -281,6 +290,7 @@
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_MODULE_NAME = Jiopayuat;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -325,6 +335,7 @@
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
@@ -338,6 +349,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				PRODUCT_MODULE_NAME = Jiopayuat;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
