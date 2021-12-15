@@ -6,7 +6,7 @@
 //
 
 import XCTest
-@testable import Jiopay_pg_uat
+@testable import Jiopayuat
 
 class Jiopay_pg_uatTests: XCTestCase {
 
