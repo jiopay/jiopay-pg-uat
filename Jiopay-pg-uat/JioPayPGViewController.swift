@@ -25,7 +25,7 @@ enum jsEvents {
     static let billPayInterface = "JioPaymentWebViewInterface"
 }
 
-public protocol JioPayDelegate {
+@objc public protocol JioPayDelegate {
     func onPaymentSuccess(tid: String, intentId: String)
     func onPaymentError(code: String, error: String)
 }
@@ -106,11 +106,12 @@ public protocol JioPayDelegate {
         showNavigationBar(animated: animated)
     }
     
-    @objc public func open(_ viewController: UIViewController, child:UIViewController, withData jioPayData:[AnyHashable:Any], url:String){
+    @objc public func open(_ viewController: UIViewController, withData jioPayData:[AnyHashable:Any],delegate jioPayDelegate: JioPayDelegate?, url:String?){
         rootController = viewController
-        child.modalPresentationStyle = .fullScreen
-        rootController?.present(child, animated: true, completion: nil)
-        parseData(data: jioPayData, url: url)
+        delegate = jioPayDelegate
+        self.modalPresentationStyle = .fullScreen
+        rootController?.present(self, animated: true, completion: nil)
+        parseData(data: jioPayData, url: url ?? env.PP)
     }
     
 //    @objc public func open(_ viewController: UIViewController, child:UIViewController, withData pgData:[AnyHashable:Any], delegate:JioPayDelegate){
@@ -219,7 +220,11 @@ extension JioPayPGViewController : WKScriptMessageHandler, WKUIDelegate, UIScrol
         let errorMessgae = data["error_msg"] as! String
         self.webViewDidClose(webView)
 //        self.delegate?.onPaymentError(code: errorCode, error: errorMessgae)
+        if(delegate == nil) {
         NotificationCenter.default.post(name: .paymentFail, object: "paymentFailObject", userInfo: ["code":errorCode, "error":errorMessgae])
+        } else {
+            self.delegate?.onPaymentError(code: errorCode, error: errorMessgae)
+        }
         
     }
     
@@ -280,7 +285,12 @@ extension JioPayPGViewController : WKScriptMessageHandler, WKUIDelegate, UIScrol
                 webView.stopLoading()
                 decisionHandler(.cancel)
                 webViewDidClose(webView)
-                NotificationCenter.default.post(name: .paymentSuccess, object: "paymentSuccessObject", userInfo: ["tid":txnId! as Any, "intentId":intentId as Any])
+                if(delegate == nil) {
+                  NotificationCenter.default.post(name: .paymentSuccess, object: "paymentSuccessObject", userInfo: ["tid":txnId! as Any, "intentId":intentId as Any])
+                } else {
+                  self.delegate?.onPaymentSuccess(tid: txnId!, intentId: intentId!)
+                }
+//                NotificationCenter.default.post(name: .paymentSuccess, object: "paymentSuccessObject", userInfo: ["tid":txnId! as Any, "intentId":intentId as Any])
 //                self.delegate?.onPaymentSuccess(tid: txnId!, intentId: intentId!)
             }else{
                 decisionHandler(.allow)
