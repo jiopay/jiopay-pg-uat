@@ -153,7 +153,7 @@ extension JioPayPGViewController : WKScriptMessageHandler, WKUIDelegate, UIScrol
         
         webView = WKWebView(frame: CGRect(x: 0, y: 0, width: SCREEN_WIDTH, height: SCREEN_HEIGHT), configuration: webConfiguration)
         webView.configuration.preferences.javaScriptEnabled = true
-        webView.configuration.preferences.javaScriptCanOpenWindowsAutomatically = true
+        //webView.configuration.preferences.javaScriptCanOpenWindowsAutomatically = true
         webView.configuration.preferences.setValue(true, forKey: "allowFileAccessFromFileURLs")
         webView.allowsBackForwardNavigationGestures = true
         webView.uiDelegate = self
@@ -202,9 +202,9 @@ extension JioPayPGViewController : WKScriptMessageHandler, WKUIDelegate, UIScrol
             case jsEvents.initReturnUrl:
                 handleReturnUrlEvent(data: data as! [String : Any])
                 break
-            case jsEvents.closeChildWindow:
-                handleCloseChildWindowEvent()
-                break
+//            case jsEvents.closeChildWindow:
+//                handleCloseChildWindowEvent()
+//                break
             case jsEvents.sendError:
                 handleSendErrorEvent(data: data as! [String : Any])
                 break
@@ -247,33 +247,33 @@ extension JioPayPGViewController : WKScriptMessageHandler, WKUIDelegate, UIScrol
         }
     }
     
-    func handleCloseChildWindowEvent() {
-        let jsMethod = "jiopayCloseChildWindow();"
-        if childPopupWebView != nil {
-            self.popupWebView!.evaluateJavaScript(jsMethod, completionHandler: { result, error in
-                guard error == nil else {
-                    print(error as Any)
-                    return
-                }
-            })
-        }else if popupWebView != nil{
-            self.webView!.evaluateJavaScript(jsMethod, completionHandler: { result, error in
-                guard error == nil else {
-                    print(error as Any)
-                    return
-                }
-            })
-        }
-    }
+//    func handleCloseChildWindowEvent() {
+//        let jsMethod = "jiopayCloseChildWindow();"
+//        if childPopupWebView != nil {
+//            self.popupWebView!.evaluateJavaScript(jsMethod, completionHandler: { result, error in
+//                guard error == nil else {
+//                    print(error as Any)
+//                    return
+//                }
+//            })
+//        }else if popupWebView != nil{
+//            self.webView!.evaluateJavaScript(jsMethod, completionHandler: { result, error in
+//                guard error == nil else {
+//                    print(error as Any)
+//                    return
+//                }
+//            })
+//        }
+//    }
     
-    public func webView(_ webView: WKWebView, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
-        guard let serverTrust = challenge.protectionSpace.serverTrust  else {
-            completionHandler(.useCredential, nil)
-            return
-        }
-        let credential = URLCredential(trust: serverTrust)
-        completionHandler(.useCredential, credential)
-    }
+//    public func webView(_ webView: WKWebView, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+//        guard let serverTrust = challenge.protectionSpace.serverTrust  else {
+//            completionHandler(.useCredential, nil)
+//            return
+//        }
+//        let credential = URLCredential(trust: serverTrust)
+//        completionHandler(.useCredential, credential)
+//    }
     
     public func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: ((WKNavigationActionPolicy) -> Void)) {
         
@@ -302,27 +302,27 @@ extension JioPayPGViewController : WKScriptMessageHandler, WKUIDelegate, UIScrol
     }
     
     
-    public func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
-        if popupWebView != nil {
-            childPopupWebView = WKWebView(frame: ChildPopupContainer.bounds, configuration: configuration)
-            ChildPopupContainer.isHidden = false
-            childPopupWebView!.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-            childPopupWebView!.navigationDelegate = self
-            childPopupWebView!.uiDelegate = self
-            ChildPopupContainer.addSubview(childPopupWebView!)
-            popupWebViewContainer.addSubview(ChildPopupContainer)
-            return childPopupWebView!
-        }else {
-            popupWebView = WKWebView(frame: popupWebViewContainer.bounds, configuration: configuration)
-            popupWebViewContainer.isHidden = false
-            popupWebView!.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-            popupWebView!.navigationDelegate = self
-            popupWebView!.uiDelegate = self
-            popupWebViewContainer.addSubview(popupWebView!)
-            view.addSubview(popupWebViewContainer)
-            return popupWebView!
-        }
-    }
+//    public func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
+//        if popupWebView != nil {
+//            childPopupWebView = WKWebView(frame: ChildPopupContainer.bounds, configuration: configuration)
+//            ChildPopupContainer.isHidden = false
+//            childPopupWebView!.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+//            childPopupWebView!.navigationDelegate = self
+//            childPopupWebView!.uiDelegate = self
+//            ChildPopupContainer.addSubview(childPopupWebView!)
+//            popupWebViewContainer.addSubview(ChildPopupContainer)
+//            return childPopupWebView!
+//        }else {
+//            popupWebView = WKWebView(frame: popupWebViewContainer.bounds, configuration: configuration)
+//            popupWebViewContainer.isHidden = false
+//            popupWebView!.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+//            popupWebView!.navigationDelegate = self
+//            popupWebView!.uiDelegate = self
+//            popupWebViewContainer.addSubview(popupWebView!)
+//            view.addSubview(popupWebViewContainer)
+//            return popupWebView!
+//        }
+//    }
     
     public func webViewDidClose(_ webView: WKWebView) {
         if webView == childPopupWebView {
