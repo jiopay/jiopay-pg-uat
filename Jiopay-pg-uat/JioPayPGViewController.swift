@@ -1,10 +1,3 @@
-//
-//  JioPayPGViewController.swift
-//  PGWebSDK
-//
-//  Created by Prashant Dwivedi on 28/06/21.
-//
-
 import Foundation
 import WebKit
 import UIKit
@@ -57,14 +50,6 @@ enum jsEvents {
     @IBOutlet weak var ChildPopupContainer: UIView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     
-//    func showPgView() -> UIViewController {
-//        let pgBundle = Bundle(for: JioPayPGViewController.self)
-//        let pgView = JioPayPGViewController(nibName: "JioPayPGViewController", bundle: pgBundle)
-//        pgView.modalPresentationStyle = .fullScreen
-//        return pgView
-//
-//    }
-    
     
     public init() {
         let pgBundle = Bundle(for: JioPayPGViewController.self)
@@ -106,20 +91,13 @@ enum jsEvents {
         showNavigationBar(animated: animated)
     }
     
-    @objc public func open(_ viewController: UIViewController, withData jioPayData:[AnyHashable:Any],delegate jioPayDelegate: JioPayDelegate?, url:String?){
+    @objc public func open(_ viewController: UIViewController, withData jioPayData:[AnyHashable:Any],delegate jioPayDelegate: JioPayDelegate){
         rootController = viewController
         delegate = jioPayDelegate
         self.modalPresentationStyle = .fullScreen
         rootController?.present(self, animated: true, completion: nil)
-        parseData(data: jioPayData, url: url ?? env.PP)
+        parseData(data: jioPayData, url: env.PP)
     }
-    
-//    @objc public func open(_ viewController: UIViewController, child:UIViewController, withData pgData:[AnyHashable:Any], delegate:JioPayDelegate){
-//        print("Inside Open function")
-//        rootController = viewController
-//        rootController?.present(child, animated: true, completion: nil)
-//        parseData(data: pgData)
-//    }
     
     func parseData(data:[AnyHashable:Any], url: String) {
         
@@ -128,11 +106,12 @@ enum jsEvents {
             let theme  = dict["theme"] as? [String:Any]
             appAccessToken = dict["appaccesstoken"] as! String
             appIdToken = dict["appidtoken"] as! String
-            
-            bodyBgColor = theme?["bodyBgColor"] as! String
-            bodyTextColor = theme?["bodyTextColor"] as! String
-            brandColor = theme?["brandColor"] as! String
-            headingText = theme?["headingText"] as! String
+            if(theme != nil) {
+            bodyBgColor = (theme!["bodyBgColor"] ?? "") as! String
+            bodyTextColor = (theme!["bodyTextColor"] ?? "") as! String
+            brandColor = (theme!["brandColor"] ?? "") as! String
+            headingText = (theme!["headingText"] ?? "") as! String
+            }
             
             loadWebView(envUrl:url)
             
@@ -202,9 +181,6 @@ extension JioPayPGViewController : WKScriptMessageHandler, WKUIDelegate, UIScrol
             case jsEvents.initReturnUrl:
                 handleReturnUrlEvent(data: data as! [String : Any])
                 break
-//            case jsEvents.closeChildWindow:
-//                handleCloseChildWindowEvent()
-//                break
             case jsEvents.sendError:
                 handleSendErrorEvent(data: data as! [String : Any])
                 break
@@ -219,13 +195,7 @@ extension JioPayPGViewController : WKScriptMessageHandler, WKUIDelegate, UIScrol
         let errorCode = data["status_code"] as! String
         let errorMessgae = data["error_msg"] as! String
         self.webViewDidClose(webView)
-//        self.delegate?.onPaymentError(code: errorCode, error: errorMessgae)
-        if(delegate == nil) {
-        NotificationCenter.default.post(name: .paymentFail, object: "paymentFailObject", userInfo: ["code":errorCode, "error":errorMessgae])
-        } else {
-            self.delegate?.onPaymentError(code: errorCode, error: errorMessgae)
-        }
-        
+        self.delegate?.onPaymentError(code: errorCode, error: errorMessgae)
     }
     
     func handleReturnUrlEvent(data: [String: Any]) {
@@ -246,34 +216,7 @@ extension JioPayPGViewController : WKScriptMessageHandler, WKUIDelegate, UIScrol
             activityIndicator.stopAnimating()
         }
     }
-    
-//    func handleCloseChildWindowEvent() {
-//        let jsMethod = "jiopayCloseChildWindow();"
-//        if childPopupWebView != nil {
-//            self.popupWebView!.evaluateJavaScript(jsMethod, completionHandler: { result, error in
-//                guard error == nil else {
-//                    print(error as Any)
-//                    return
-//                }
-//            })
-//        }else if popupWebView != nil{
-//            self.webView!.evaluateJavaScript(jsMethod, completionHandler: { result, error in
-//                guard error == nil else {
-//                    print(error as Any)
-//                    return
-//                }
-//            })
-//        }
-//    }
-    
-//    public func webView(_ webView: WKWebView, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
-//        guard let serverTrust = challenge.protectionSpace.serverTrust  else {
-//            completionHandler(.useCredential, nil)
-//            return
-//        }
-//        let credential = URLCredential(trust: serverTrust)
-//        completionHandler(.useCredential, credential)
-//    }
+
     
     public func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: ((WKNavigationActionPolicy) -> Void)) {
         
@@ -285,13 +228,7 @@ extension JioPayPGViewController : WKScriptMessageHandler, WKUIDelegate, UIScrol
                 webView.stopLoading()
                 decisionHandler(.cancel)
                 webViewDidClose(webView)
-                if(delegate == nil) {
-                  NotificationCenter.default.post(name: .paymentSuccess, object: "paymentSuccessObject", userInfo: ["tid":txnId! as Any, "intentId":intentId as Any])
-                } else {
-                  self.delegate?.onPaymentSuccess(tid: txnId!, intentId: intentId!)
-                }
-//                NotificationCenter.default.post(name: .paymentSuccess, object: "paymentSuccessObject", userInfo: ["tid":txnId! as Any, "intentId":intentId as Any])
-//                self.delegate?.onPaymentSuccess(tid: txnId!, intentId: intentId!)
+                self.delegate?.onPaymentSuccess(tid: txnId!, intentId: intentId!)
             }else{
                 decisionHandler(.allow)
             }
@@ -300,29 +237,6 @@ extension JioPayPGViewController : WKScriptMessageHandler, WKUIDelegate, UIScrol
             decisionHandler(.allow)
         }
     }
-    
-    
-//    public func webView(_ webView: WKWebView, createWebViewWith configuration: WKWebViewConfiguration, for navigationAction: WKNavigationAction, windowFeatures: WKWindowFeatures) -> WKWebView? {
-//        if popupWebView != nil {
-//            childPopupWebView = WKWebView(frame: ChildPopupContainer.bounds, configuration: configuration)
-//            ChildPopupContainer.isHidden = false
-//            childPopupWebView!.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-//            childPopupWebView!.navigationDelegate = self
-//            childPopupWebView!.uiDelegate = self
-//            ChildPopupContainer.addSubview(childPopupWebView!)
-//            popupWebViewContainer.addSubview(ChildPopupContainer)
-//            return childPopupWebView!
-//        }else {
-//            popupWebView = WKWebView(frame: popupWebViewContainer.bounds, configuration: configuration)
-//            popupWebViewContainer.isHidden = false
-//            popupWebView!.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-//            popupWebView!.navigationDelegate = self
-//            popupWebView!.uiDelegate = self
-//            popupWebViewContainer.addSubview(popupWebView!)
-//            view.addSubview(popupWebViewContainer)
-//            return popupWebView!
-//        }
-//    }
     
     public func webViewDidClose(_ webView: WKWebView) {
         if webView == childPopupWebView {
