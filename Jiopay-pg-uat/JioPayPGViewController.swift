@@ -15,7 +15,7 @@ enum jsEvents {
     static let initReturnUrl = "INIT_RET_URL"
     static let closeChildWindow = "CLOSE_CHILD_WINDOW"
     static let sendError = "SEND_ERROR"
-    static let billPayInterface = "JioPaymentWebViewInterface"
+    static let pgInterface = "JioPaymentWebViewInterface"
 }
 
 @objc public protocol JioPayDelegate {
@@ -92,11 +92,13 @@ enum jsEvents {
     }
     
     @objc public func open(_ viewController: UIViewController, withData jioPayData:[AnyHashable:Any],delegate jioPayDelegate: JioPayDelegate){
-        rootController = viewController
-        delegate = jioPayDelegate
-        self.modalPresentationStyle = .fullScreen
-        rootController?.present(self, animated: true, completion: nil)
-        parseData(data: jioPayData, url: env.PP)
+        DispatchQueue.main.async {
+           self.rootController = viewController
+           self.delegate = jioPayDelegate
+           self.modalPresentationStyle = .fullScreen
+           self.rootController?.present(self, animated: true, completion: nil)
+           self.parseData(data: jioPayData, url: env.PP)
+        }
     }
     
     func parseData(data:[AnyHashable:Any], url: String) {
@@ -107,12 +109,11 @@ enum jsEvents {
             appAccessToken = dict["appaccesstoken"] as! String
             appIdToken = dict["appidtoken"] as! String
             if(theme != nil) {
-            bodyBgColor = (theme!["bodyBgColor"] ?? "") as! String
-            bodyTextColor = (theme!["bodyTextColor"] ?? "") as! String
-            brandColor = (theme!["brandColor"] ?? "") as! String
-            headingText = (theme!["headingText"] ?? "") as! String
+              bodyBgColor = (theme!["bodyBgColor"] ?? "") as! String
+              bodyTextColor = (theme!["bodyTextColor"] ?? "") as! String
+              brandColor = (theme!["brandColor"] ?? "") as! String
+              headingText = (theme!["headingText"] ?? "") as! String
             }
-            
             loadWebView(envUrl:url)
             
         }
@@ -125,14 +126,12 @@ extension JioPayPGViewController : WKScriptMessageHandler, WKUIDelegate, UIScrol
         //  Initial configuration required for WKWebView
         
         let contentController = WKUserContentController()
-        contentController.add(self, name: jsEvents.billPayInterface)
+        contentController.add(self, name: jsEvents.pgInterface)
         
         let webConfiguration = WKWebViewConfiguration()
         webConfiguration.userContentController = contentController
         
         webView = WKWebView(frame: CGRect(x: 0, y: 0, width: SCREEN_WIDTH, height: SCREEN_HEIGHT), configuration: webConfiguration)
-        webView.configuration.preferences.javaScriptEnabled = true
-        //webView.configuration.preferences.javaScriptCanOpenWindowsAutomatically = true
         webView.configuration.preferences.setValue(true, forKey: "allowFileAccessFromFileURLs")
         webView.allowsBackForwardNavigationGestures = true
         webView.uiDelegate = self
@@ -149,7 +148,6 @@ extension JioPayPGViewController : WKScriptMessageHandler, WKUIDelegate, UIScrol
         
         var post: String = "appaccesstoken=\(appAccessToken)&appidtoken=\(appIdToken)&intentid=\(intentId)&brandColor=\(brandColor)&bodyBgColor=\(bodyBgColor)&bodyTextColor=\(bodyTextColor)&headingText=\(headingText)"
         post = post.replacingOccurrences(of: "+", with: "%2b")
-        
         request.httpBody = post.data(using: .utf8)
         showActivityIndicator(show: true)
         webView.load(request as URLRequest)
@@ -160,7 +158,7 @@ extension JioPayPGViewController : WKScriptMessageHandler, WKUIDelegate, UIScrol
     }
     
     public func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
-        if message.name == jsEvents.billPayInterface {
+        if message.name == jsEvents.pgInterface {
             do {
                 let messageBody = message.body as! String
                 let eventData = Data(messageBody.utf8)
