@@ -110,8 +110,8 @@ enum jsEvents {
             let theme  = dict["theme"] as? [String:Any]
             appAccessToken = dict["appaccesstoken"] as! String
             appIdToken = dict["appidtoken"] as! String
-            cvv = dict["cvv" ?? ""] as! String
-            vaultId = dict["vaultId" ?? ""] as! String
+            cvv = (dict["cvv"] ?? "") as! String
+            vaultId = (dict["vaultId"] ?? "") as! String
             if(theme != nil) {
               bodyBgColor = (theme!["bodyBgColor"] ?? "") as! String
               bodyTextColor = (theme!["bodyTextColor"] ?? "") as! String
