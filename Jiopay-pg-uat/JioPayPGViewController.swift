@@ -36,6 +36,7 @@ enum jsEvents {
     var intentId: String = ""
     var cvv: String = ""
     var vaultId: String = ""
+    var checkout: String = ""
     public var urlParams: String = ""
     var brandColor: String = ""
     var bodyBgColor: String = ""
@@ -112,6 +113,12 @@ enum jsEvents {
             appIdToken = dict["appidtoken"] as! String
             cvv = (dict["cvv"] ?? "") as! String
             vaultId = (dict["vaultId"] ?? "") as! String
+            if dict["checkout"] != nil{
+                  do {
+                      let data1 =  try JSONSerialization.data(withJSONObject: dict["checkout"])
+                      checkout = String(data: data1, encoding: String.Encoding.utf8) ?? ""
+                     } catch { }
+            }
             if(theme != nil) {
               bodyBgColor = (theme!["bodyBgColor"] ?? "") as! String
               bodyTextColor = (theme!["bodyTextColor"] ?? "") as! String
@@ -149,7 +156,7 @@ extension JioPayPGViewController : WKScriptMessageHandler, WKUIDelegate, UIScrol
         request.httpMethod = "POST"
         request.addValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
         
-        var post: String = "appaccesstoken=\(appAccessToken)&appidtoken=\(appIdToken)&intentid=\(intentId)&cvv=\(cvv)&vaultId=\(vaultId)&brandColor=\(brandColor)&bodyBgColor=\(bodyBgColor)&bodyTextColor=\(bodyTextColor)&headingText=\(headingText)"
+        var post: String = "appaccesstoken=\(appAccessToken)&appidtoken=\(appIdToken)&intentid=\(intentId)&cvv=\(cvv)&vaultId=\(vaultId)&brandColor=\(brandColor)&bodyBgColor=\(bodyBgColor)&bodyTextColor=\(bodyTextColor)&headingText=\(headingText)&checkout=\(checkout)"
         post = post.replacingOccurrences(of: "+", with: "%2b")
         request.httpBody = post.data(using: .utf8)
         showActivityIndicator(show: true)
