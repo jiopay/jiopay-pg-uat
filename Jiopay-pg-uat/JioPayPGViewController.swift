@@ -20,7 +20,7 @@ enum jsEvents {
 
 @objc public protocol JioPayDelegate {
     func onPaymentSuccess(tid: String, intentId: String)
-    func onPaymentError(code: String, error: String)
+    func onPaymentError(code: String, error: String,intentId: String)
 }
 
 @objcMembers public class JioPayPGViewController: UIViewController {
@@ -203,7 +203,7 @@ extension JioPayPGViewController : WKScriptMessageHandler, WKUIDelegate, UIScrol
         let errorCode = data["status_code"] as! String
         let errorMessgae = data["error_msg"] as! String
         self.webViewDidClose(webView)
-        self.delegate?.onPaymentError(code: errorCode, error: errorMessgae)
+        self.delegate?.onPaymentError(code: errorCode, error: errorMessgae,intentId:intentId)
     }
     
     func handleReturnUrlEvent(data: [String: Any]) {
